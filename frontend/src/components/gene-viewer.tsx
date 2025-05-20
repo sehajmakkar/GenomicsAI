@@ -7,6 +7,8 @@ import { GeneInformation } from "./gene-information";
 import { GeneSequence } from "./gene-sequence";
 import type { VariantAnalysisHandle } from "./variant-analysis";
 import KnownVariants from "./known-variants";
+import { VariantComparisonModal } from "./variant-comparison-modal";
+import VariantAnalysis from "./variant-analysis";
 
 export default function GeneViewer({
   gene,
@@ -203,6 +205,14 @@ export default function GeneViewer({
     );
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex h-64 items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-gray-800"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <Button
@@ -214,6 +224,17 @@ export default function GeneViewer({
         <ArrowLeft className="mr-2 h-4 w-4" />
         Back to Results
       </Button>
+
+      <VariantAnalysis
+        ref={variantAnalysisRef}
+        gene={gene}
+        genomeId={genomeId}
+        chromosome={gene.chrom}
+        clinvarVariants={clinvarVariants}
+        referenceSequence={activeReferenceNucleotide}
+        sequencePosition={activeSequencePosition}
+        geneBounds={geneBounds}
+      />
 
       <KnownVariants
         refreshVariants={fetchClinvarVariants}
@@ -246,6 +267,11 @@ export default function GeneViewer({
         gene={gene}
         geneDetail={geneDetail}
         geneBounds={geneBounds}
+      />
+
+      <VariantComparisonModal
+        comparisonVariant={comparisonVariant}
+        onClose={() => setComparisonVariant(null)}
       />
 
     </div>
