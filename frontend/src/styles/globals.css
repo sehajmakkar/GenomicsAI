@@ -1,8 +1,75 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@theme {
-  --color-lightOrange: #e86440;
-  --color-mediumOrange: #ed633e;
-  --color-darkOrange: #d4562f;
+@custom-variant dark (&:is(.dark *));
+
+@layer components {
+  .btn {
+    @apply  px-4 py-2 rounded-lg font-medium inline-flex items-center justify-center tracking-tight;
+  }
+
+  .btn-primary {
+    @apply bg-black cursor-pointer text-white;
+  }
+
+  .btn-text {
+    @apply text-black cursor-pointer border border-[#db4d061e] bg-transparent;
+  }
+
+  .logo-ticker-image{
+    @apply h-8 w-auto;
+  }
+
+  .tag{
+    @apply text-sm inline-flex border border-[#222]/10 px-3 py-1 rounded-lg tracking-tight
+  }
+
+  .section-title{
+    @apply text-center text-3xl md:text-[54px] md:leading-[60px] font-bold tracking-tighter bg-gradient-to-b from-[#ff734d] to-[#d64000] text-transparent bg-clip-text 
+  }
+
+  .section-description{
+    @apply text-center text-[22px] leading-[30px] tracking-tight text-[#010D3E] 
+  }
+
+  .section-heading{
+    @apply max-w-[540px] lg:max-w-[700px] mx-auto
+  }
+
+  .card{
+    @apply p-10 border border-[#F1F1F1] rounded-3xl shadow-[0_7px_14px_#EAEAEA] max-w-xs w-full
+  }
+}
+
+@theme inline {
+  --animate-rainbow: rainbow var(--speed, 2s) infinite linear;
+  --color-color-5: var(--color-5);
+  --color-color-4: var(--color-4);
+  --color-color-3: var(--color-3);
+  --color-color-2: var(--color-2);
+  --color-color-1: var(--color-1);
+  @keyframes rainbow {
+  0% {
+    background-position: 0%;
+    }
+  100% {
+    background-position: 200%;
+    }
+  }
+}
+
+:root {
+  --color-1: oklch(66.2% 0.225 25.9);
+  --color-2: oklch(60.4% 0.26 302);
+  --color-3: oklch(69.6% 0.165 251);
+  --color-4: oklch(80.2% 0.134 225);
+  --color-5: oklch(90.7% 0.231 133);
+}
+
+.dark {
+  --color-1: oklch(66.2% 0.225 25.9);
+  --color-2: oklch(60.4% 0.26 302);
+  --color-3: oklch(69.6% 0.165 251);
+  --color-4: oklch(80.2% 0.134 225);
+  --color-5: oklch(90.7% 0.231 133);
 }

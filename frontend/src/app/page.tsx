@@ -1,11 +1,11 @@
 // landing page
-import Link from "next/link";
-import { Button } from "~/components/ui/button";
+import { Hero } from "~/sections/Hero";
+
 
 export default function HomePage() {
   return (
-    <main>
-      <h1 className="text-3xl">hello</h1>
-    </main>
+    <>
+    <Hero />
+    </>
   );
 }
