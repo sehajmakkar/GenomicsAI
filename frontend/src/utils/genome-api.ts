@@ -65,7 +65,8 @@ export interface AnalysisResult {
 }
 
 export async function getAvailableGenomes() {
-  const api_url = "https://api.genome.ucsc.edu/list/ucscGenomes";
+  // Use our proxy endpoint instead of direct UCSC API call
+  const api_url = "/api/proxy/ucsc/genomes";
   const response = await fetch(api_url);
 
   if (!response.ok) {
@@ -101,7 +102,8 @@ export async function getAvailableGenomes() {
 }
 
 export async function getGenomeChromosomes(genomeId: string) {
-  const api_url = `https://api.genome.ucsc.edu/list/chromosomes?genome=${genomeId}`;
+  // Use our proxy endpoint instead of direct UCSC API call
+  const api_url = `/api/proxy/ucsc/chromosomes?genome=${genomeId}`;
   const response = await fetch(api_url);
 
   if (!response.ok) {
@@ -251,7 +253,8 @@ export async function fetchGeneSequence(
     const apiStart = start - 1;
     const apiEnd = end;
 
-    const apiUrl = `https://api.genome.ucsc.edu/getData/sequence?genome=${genomeId};chrom=${chromosome};start=${apiStart};end=${apiEnd}`;
+    // Use our proxy endpoint instead of direct UCSC API call
+    const apiUrl = `/api/proxy/ucsc/sequence?genome=${genomeId}&chrom=${chromosome}&start=${apiStart}&end=${apiEnd}`;
     const response = await fetch(apiUrl);
     const data = await response.json();
 
