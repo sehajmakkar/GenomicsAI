@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "SAAS Landing Page",
+  title: "MutateAI",
   description: "Made with Love by Sehaj Makkar - KryptoKodes",
 };
 

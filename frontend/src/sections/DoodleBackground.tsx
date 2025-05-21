@@ -70,7 +70,7 @@ export default function DoodleBackground() {
   };
 
   // Create positions for the entire page - using more positions to cover all sections
-  const positions = generatePositions(25);
+  const positions = generatePositions(10);
 
   return (
     <div className="fixed inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
