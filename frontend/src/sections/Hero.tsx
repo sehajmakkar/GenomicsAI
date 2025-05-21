@@ -100,7 +100,7 @@ export const Hero = () => {
   };
 
   return (
-    <section ref={sectionRef} className="bg-gradient-to-b from-[#FFFFFF] to-[#d78451] py-24 overflow-x-clip">
+    <section ref={sectionRef} className="bg-gradient-to-b from-[#EAEEFE] to-[#d78451] py-24 overflow-x-clip">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="section-heading">
           <div className="flex justify-center">

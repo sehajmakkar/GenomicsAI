@@ -23,6 +23,7 @@ import {
   TableRow,
 } from "~/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import { Header } from "~/sections/Header";
 import {
   type ChromosomeFromSearch,
   type GeneFromSearch,
@@ -152,22 +153,8 @@ export default function AnalyzePage() {
 
   return (
     <div className="min-h-screen bg-[#e9eeea]">
-      <header className="mb-5 border-b border-[#3c4f3d]/10 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center">
-            <div className="relative">
-              <h1 className="text-xl font-light tracking-wide text-[#3c4f3d]">
-                <span className="font-normal">EVO</span>
-                <span className="text-[#de8246]">2</span>
-              </h1>
-              <div className="absolute -bottom-1 left-0 h-[2px] w-12 bg-[#de8246]"></div>
-            </div>
-            <span className="text-sm font-light text-[#3c4f3d]/70">
-              Variant Analysis
-            </span>
-          </div>
-        </div>
-      </header>
+      
+      <Header />
 
       <main className="container mx-auto px-4 sm:px-6 lg:px-8">
         {selectedGene ? (
