@@ -275,15 +275,15 @@ const VariantAnalysis = forwardRef<VariantAnalysisHandle, VariantAnalysisProps>(
                   variant?.variation_type
                     ?.toLowerCase()
                     .includes("single nucleotide") &&
-                  parseInt(variant?.location?.replaceAll(",", "")) ===
+                  parseInt(variant?.location?.replaceAll(",", "") ?? "0") ===
                     parseInt(variantPosition.replaceAll(",", "")),
               )
               .map((matchedVariant) => {
-                const refAltMatch = /(\w)>(\w)/.exec(matchedVariant.title);
+                const refAltMatch = /(\w)>(\w)/.exec(matchedVariant.title ?? "");
 
                 let ref = null;
                 let alt = null;
-                if (refAltMatch && refAltMatch.length === 3) {
+                if (refAltMatch?.length === 3) {
                   ref = refAltMatch[1];
                   alt = refAltMatch[2];
                 }

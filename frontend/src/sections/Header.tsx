@@ -30,6 +30,7 @@ export const Header = () => {
               <a
                 href="https://www.biorxiv.org/content/10.1101/2025.02.18.638918v1.full.pdf"
                 target="_blank"
+                rel="noopener noreferrer"
                 className="font-medium text-black/60 transition-colors duration-300 hover:text-[#ff734d]"
               >
                 Research Paper
@@ -37,6 +38,7 @@ export const Header = () => {
               <a
                 href="https://github.com/sehajmakkar/GenomicsAI"
                 target="_blank"
+                rel="noopener noreferrer"
                 className="font-medium text-black/60 transition-colors duration-300 hover:text-[#ff734d]"
               >
                 Github
@@ -97,6 +99,7 @@ export const Header = () => {
                 <a
                   href="https://www.biorxiv.org/content/10.1101/2025.02.18.638918v1.full.pdf"
                   target="_blank"
+                  rel="noopener noreferrer"
                   className="py-2 text-center font-medium text-black/60 transition-colors duration-300 hover:text-[#ff734d]"
                 >
                   Research Paper
@@ -104,6 +107,7 @@ export const Header = () => {
                 <a
                   href="https://github.com/sehajmakkar/GenomicsAI"
                   target="_blank"
+                  rel="noopener noreferrer"
                   className="py-2 text-center font-medium text-black/60 transition-colors duration-300 hover:text-[#ff734d]"
                 >
                   Github

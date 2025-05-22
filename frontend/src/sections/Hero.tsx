@@ -136,7 +136,7 @@ export const Hero = () => {
           </h2>
           <p className="mt-5 text-center text-lg leading-[30px] tracking-tight text-[#010D3E]">
             Supercharge your genomics workflow with an AI engine built on
-            Stanford's Evo 2. Analyze DNA mutations, predict disease impact, and
+            Stanford&apos;s Evo 2. Analyze DNA mutations, predict disease impact, and
             unlock next-gen insights for faster, smarter diagnostics.
           </p>
           <div className="mt-5 flex items-center justify-center gap-6">

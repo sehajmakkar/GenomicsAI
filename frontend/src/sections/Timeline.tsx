@@ -1,8 +1,24 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { Search, FileInput, ListFilter, Cog, BarChart3, LineChart } from "lucide-react";
+
+
+// Define proper TypeScript interfaces
+interface TimelineStep {
+  icon: React.ReactElement;
+  title: string;
+  description: string;
+  color: string;
+}
+
+interface TimelineStepProps {
+  step: TimelineStep;
+  index: number;
+  isActive: boolean;
+  isOdd: boolean;
+}
 
 export function PathogenicityTimeline() {
   const containerRef = useRef(null);
@@ -25,7 +41,7 @@ export function PathogenicityTimeline() {
   }, [scrollYProgress]);
 
   // Timeline steps data - actual user workflow
-  const timelineSteps = [
+  const timelineSteps: TimelineStep[] = [
     {
       icon: <Search />,
       title: "Select Gene",
@@ -72,7 +88,7 @@ export function PathogenicityTimeline() {
             Your Analysis Workflow
           </h2>
           <p className="text-center text-lg leading-[30px] tracking-tight text-neutral-200 mt-3 max-w-2xl mx-auto">
-            Our platform guides you through a comprehensive DNA mutation analysis process, leveraging Stanford's Evo 2 AI to deliver accurate pathogenicity assessments.
+            Our platform guides you through a comprehensive DNA mutation analysis process, leveraging Stanford&apos;s Evo 2 AI to deliver accurate pathogenicity assessments.
           </p>
         </div>
 
@@ -108,7 +124,7 @@ export function PathogenicityTimeline() {
   );
 }
 
-function TimelineStep({ step, index, isActive, isOdd }: any) {
+function TimelineStep({ step, index, isActive, isOdd }: TimelineStepProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, margin: "-100px 0px" });
   
