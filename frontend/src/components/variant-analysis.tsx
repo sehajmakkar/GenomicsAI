@@ -61,7 +61,18 @@ const VariantAnalysis = forwardRef<VariantAnalysisHandle, VariantAnalysisProps>(
     );
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [variantError, setVariantError] = useState<string | null>(null);
+    const [loadingStep, setLoadingStep] = useState(0);
+    const [countdown, setCountdown] = useState(0);
     const alternativeInputRef = useRef<HTMLInputElement>(null);
+
+    const loadingSteps = [
+      "Initializing Evo2 model...",
+      "Loading neural networks...",
+      "Preparing genome data...",
+      "Analyzing variant impact...",
+      "Computing pathogenicity scores...",
+      "Finalizing predictions..."
+    ];
 
     useImperativeHandle(ref, () => ({
       focusAlternativeInput: () => {
@@ -77,6 +88,33 @@ const VariantAnalysis = forwardRef<VariantAnalysisHandle, VariantAnalysisProps>(
         setVariantReference(referenceSequence);
       }
     }, [sequencePosition, referenceSequence]);
+
+    useEffect(() => {
+      if (isAnalyzing) {
+        // Start with cold startup countdown
+        setCountdown(15);
+        setLoadingStep(0);
+        
+        const countdownInterval = setInterval(() => {
+          setCountdown(prev => {
+            if (prev <= 1) {
+              clearInterval(countdownInterval);
+              // Start cycling through loading steps
+              const stepInterval = setInterval(() => {
+                setLoadingStep(prev => (prev + 1) % loadingSteps.length);
+              }, 1500);
+              
+              // Clean up step interval when analysis completes
+              setTimeout(() => clearInterval(stepInterval), 30000);
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+
+        return () => clearInterval(countdownInterval);
+      }
+    }, [isAnalyzing]);
 
     const handlePositionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setVariantPosition(e.target.value);
@@ -112,7 +150,16 @@ const VariantAnalysis = forwardRef<VariantAnalysisHandle, VariantAnalysisProps>(
         setVariantError("Failed to analyze variant");
       } finally {
         setIsAnalyzing(false);
+        setCountdown(0);
+        setLoadingStep(0);
       }
+    };
+
+    const getLoadingText = () => {
+      if (countdown > 0) {
+        return `Evo2 is warming up... ${countdown}s`;
+      }
+      return loadingSteps[loadingStep];
     };
 
     return (
@@ -182,13 +229,45 @@ const VariantAnalysis = forwardRef<VariantAnalysisHandle, VariantAnalysisProps>(
               {isAnalyzing ? (
                 <>
                   <span className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent align-middle"></span>
-                  Analyzing...
+                  {getLoadingText()}
                 </>
               ) : (
                 "Analyze variant"
               )}
             </Button>
           </div>
+
+          {/* Loading Progress Bar */}
+          {isAnalyzing && (
+            <div className="mt-4 rounded-md border border-[#3c4f3d]/10 bg-[#e9eeea]/30 p-4">
+              <div className="mb-2 flex items-center justify-between">
+                <span className="text-xs font-medium text-[#3c4f3d]/70">
+                  Analysis Progress
+                </span>
+                {countdown > 0 && (
+                  <span className="text-xs text-[#3c4f3d]/60">
+                    Cold start in progress
+                  </span>
+                )}
+              </div>
+              <div className="h-2 w-full rounded-full bg-[#e9eeea]">
+                <div
+                  className="h-2 rounded-full bg-[#3c4f3d] transition-all duration-300 ease-in-out"
+                  style={{
+                    width: countdown > 0 
+                      ? `${((15 - countdown) / 15) * 30}%`
+                      : `${30 + (loadingStep / loadingSteps.length) * 70}%`,
+                  }}
+                ></div>
+              </div>
+              <div className="mt-2 text-xs text-[#3c4f3d]/60">
+                {countdown > 0 
+                  ? "Model is starting up on serverless GPU..."
+                  : "Processing your variant analysis request..."
+                }
+              </div>
+            </div>
+          )}
 
           {variantPosition &&
             clinvarVariants
@@ -269,8 +348,8 @@ const VariantAnalysis = forwardRef<VariantAnalysisHandle, VariantAnalysisProps>(
                         >
                           {isAnalyzing ? (
                             <>
-                              <span className="mr-1 inline-block h-3 w-3 animate-spin rounded-full border-2 border-white border-t-transparent align-middle"></span>
-                              Analyzing...
+                              <span className="mr-1 inline-block h-3 w-3 animate-spin rounded-full border-2 border-[#3c4f3d] border-t-transparent align-middle"></span>
+                              {getLoadingText()}
                             </>
                           ) : (
                             <>
