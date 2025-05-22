@@ -10,7 +10,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "MutateAI",
+  title: "GenomicsAI",
   description: "Made with Love by Sehaj Makkar - KryptoKodes",
   icons: {
     icon: '/favi.png',

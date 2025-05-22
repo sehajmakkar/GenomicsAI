@@ -65,7 +65,7 @@ export function PathogenicityTimeline() {
   ];
 
   return (
-    <section ref={containerRef} className="py-24 bg-gradient-to-b from-[#1d1a19] to-[#0b0908] overflow-hidden">
+    <section id="workflow" ref={containerRef} className="py-24 bg-gradient-to-b from-[#1d1a19] to-[#0b0908] overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-16">
           <h2 className="text-center text-[34px] md:text-[44px] font-bold tracking-tighter bg-gradient-to-b from-[#ff734d] to-[#d64000] text-transparent bg-clip-text mt-5">

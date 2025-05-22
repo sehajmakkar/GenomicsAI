@@ -11,35 +11,29 @@ export function Footer() {
   const footerLinks = {
     product: [
       { name: "Analyze", href: "/analyze" },
-      { name: "Features", href: "/features" },
-      { name: "Pricing", href: "/pricing" },
-      { name: "API Documentation", href: "/docs" }
-    ],
-    research: [
-      { name: "Research Paper", href: "/research" },
-      { name: "Case Studies", href: "/case-studies" },
-      { name: "Whitepapers", href: "/whitepapers" },
-      { name: "Publications", href: "/publications" }
+      { name: "Features", href: "#features" },
+      { name: "Workflow", href: "#workflow" },
+      { name: "API Documentation", href: "https://github.com/ArcInstitute/evo2" }
     ],
     company: [
-      { name: "About Us", href: "/about" },
-      { name: "Team", href: "/team" },
-      { name: "Careers", href: "/careers" },
-      { name: "Contact", href: "/contact" }
+      { name: "About Us", href: "/" },
+      { name: "Team", href: "/" },
+      { name: "Careers", href: "/" },
+      { name: "Contact", href: "/" }
     ],
     legal: [
-      { name: "Privacy Policy", href: "/privacy" },
-      { name: "Terms of Service", href: "/terms" },
-      { name: "Cookie Policy", href: "/cookies" },
-      { name: "Data Security", href: "/security" }
+      { name: "Privacy Policy", href: "/" },
+      { name: "Terms of Service", href: "/" },
+      { name: "Cookie Policy", href: "/" },
+      { name: "Data Security", href: "/" }
     ]
   };
 
   const socialLinks = [
-    { name: "GitHub", icon: Github, href: "https://github.com/your-repo", color: "#333" },
-    { name: "Twitter", icon: Twitter, href: "https://twitter.com/your-handle", color: "#1DA1F2" },
-    { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com/company/your-company", color: "#0077B5" },
-    { name: "Email", icon: Mail, href: "mailto:contact@genomicai.com", color: "#EA4335" }
+    { name: "GitHub", icon: Github, href: "https://github.com/GenomicsAI", color: "#333" },
+    { name: "Twitter", icon: Twitter, href: "https://x.com/sehajmakkarr", color: "#1DA1F2" },
+    { name: "LinkedIn", icon: Linkedin, href: "https://www.linkedin.com/in/sehajmakkar/", color: "#0077B5" },
+    { name: "Email", icon: Mail, href: "mailto:sehajmakkar007@gmail.com", color: "#EA4335" }
   ];
 
   const containerVariants = {
@@ -81,9 +75,9 @@ export function Footer() {
             variants={itemVariants}
           >
             <div className="flex items-center gap-3 mb-6">
-              <Image src={Logo} alt="GenomicAI Logo" height={40} width={40} className="rounded-lg" />
+              <Image src={Logo} alt="GenomicsAI Logo" height={40} width={40} className="rounded-lg" />
               <span className="font-bold text-2xl bg-gradient-to-r from-[#ff734d] to-[#d64000] text-transparent bg-clip-text">
-                GenomicAI
+                GenomicsAI
               </span>
             </div>
             <p className="text-gray-400 mb-6 max-w-md leading-relaxed">
@@ -127,23 +121,6 @@ export function Footer() {
             </ul>
           </motion.div>
 
-          {/* Research Links */}
-          <motion.div variants={itemVariants}>
-            <h3 className="font-semibold text-lg mb-4 text-white">Research</h3>
-            <ul className="space-y-3">
-              {footerLinks.research.map((link) => (
-                <li key={link.name}>
-                  <a 
-                    href={link.href}
-                    className="text-gray-400 hover:text-[#ff734d] transition-colors duration-300 flex items-center group"
-                  >
-                    {link.name}
-                    <ExternalLink className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
 
           {/* Company Links */}
           <motion.div variants={itemVariants}>
@@ -215,7 +192,7 @@ export function Footer() {
           variants={itemVariants}
         >
           <div className="flex flex-col md:flex-row items-center gap-4 text-gray-400">
-            <p>&copy; {currentYear} GenomicAI. All rights reserved.</p>
+            <p>&copy; {currentYear} GenomicsAI. All rights reserved.</p>
             <div className="hidden md:block w-px h-4 bg-gray-700"></div>
             <p className="text-sm">Powered by Stanford's Evo 2 Architecture</p>
           </div>
@@ -240,7 +217,7 @@ export function Footer() {
               <Heart className="h-4 w-4 text-red-500 fill-red-500" />
             </motion.div>
             <span className="text-sm">by</span>
-            <span className="font-semibold text-[#ff734d]">Sehaj</span>
+            <span className="font-semibold text-[#ff734d]">SEHAJ</span>
           </motion.div>
         </motion.div>
       </motion.div>

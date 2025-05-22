@@ -1,8 +1,7 @@
 // analysis page
 "use client";
-import { Heading1, icons, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
-import { set } from "zod/v4";
 import GeneViewer from "~/components/gene-viewer";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";

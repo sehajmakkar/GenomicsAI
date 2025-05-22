@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import Logo from "~/assets/tt.png";
 import Image from "next/image";
 import MenuIcon from "~/assets/menu.svg";
@@ -14,7 +15,7 @@ export const Header = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             {/* Logo and Brand Name */}
-            <div className="flex items-center gap-3 cursor-pointer">
+            <Link href="/" className="flex cursor-pointer items-center gap-3">
               <Image
                 src={Logo}
                 alt="logo"
@@ -22,39 +23,44 @@ export const Header = () => {
                 width={40}
                 className="rounded-lg"
               />
-            </div>
+            </Link>
 
             {/* Desktop Navigation - Centered */}
             <nav className="absolute left-1/2 hidden -translate-x-1/2 transform items-center gap-8 md:flex">
               <a
-                href="#"
+                href="https://www.biorxiv.org/content/10.1101/2025.02.18.638918v1.full.pdf"
+                target="_blank"
                 className="font-medium text-black/60 transition-colors duration-300 hover:text-[#ff734d]"
               >
                 Research Paper
               </a>
               <a
-                href="#"
+                href="https://github.com/sehajmakkar/GenomicsAI"
+                target="_blank"
                 className="font-medium text-black/60 transition-colors duration-300 hover:text-[#ff734d]"
               >
                 Github
               </a>
               <a
-                href="#"
+                href="#workflow"
+                className="font-medium text-black/60 transition-colors duration-300 hover:text-[#ff734d]"
+              >
+                Workflow
+              </a>
+              <a
+                href="#features"
                 className="font-medium text-black/60 transition-colors duration-300 hover:text-[#ff734d]"
               >
                 Features
-              </a>
-              <a
-                href="#"
-                className="font-medium text-black/60 transition-colors duration-300 hover:text-[#ff734d]"
-              >
-                About
               </a>
             </nav>
 
             {/* Desktop CTA Button - Right Aligned */}
             <div className="hidden md:flex">
-              <button className="btn btn-primary group relative overflow-hidden">
+              <Link
+                href="/analyze"
+                className="btn btn-primary group relative overflow-hidden"
+              >
                 <span className="inline-flex items-center">
                   Analyze
                   <svg
@@ -72,12 +78,12 @@ export const Header = () => {
                     />
                   </svg>
                 </span>
-              </button>
+              </Link>
             </div>
 
             {/* Mobile Menu Button */}
             <button
-              className="md:hidden cursor-pointer"
+              className="cursor-pointer md:hidden"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               <Image src={MenuIcon} alt="menu" className="h-6 w-6" />
@@ -89,30 +95,35 @@ export const Header = () => {
             <div className="mt-4 border-t border-gray-200 pb-4 md:hidden">
               <nav className="flex flex-col gap-4 pt-4">
                 <a
-                  href="#"
+                  href="https://www.biorxiv.org/content/10.1101/2025.02.18.638918v1.full.pdf"
+                  target="_blank"
                   className="py-2 text-center font-medium text-black/60 transition-colors duration-300 hover:text-[#ff734d]"
                 >
                   Research Paper
                 </a>
                 <a
-                  href="#"
+                  href="https://github.com/sehajmakkar/GenomicsAI"
+                  target="_blank"
                   className="py-2 text-center font-medium text-black/60 transition-colors duration-300 hover:text-[#ff734d]"
                 >
                   Github
                 </a>
                 <a
-                  href="#"
+                  href="#workflow"
+                  className="py-2 text-center font-medium text-black/60 transition-colors duration-300 hover:text-[#ff734d]"
+                >
+                  Workflow
+                </a>
+                <a
+                  href="#features"
                   className="py-2 text-center font-medium text-black/60 transition-colors duration-300 hover:text-[#ff734d]"
                 >
                   Features
                 </a>
-                <a
-                  href="#"
-                  className="py-2 text-center font-medium text-black/60 transition-colors duration-300 hover:text-[#ff734d]"
+                <Link
+                  href="/analyze"
+                  className="btn btn-primary group relative overflow-hidden"
                 >
-                  About
-                </a>
-                <button className="btn btn-primary group relative overflow-hidden">
                   <span className="inline-flex items-center">
                     Analyze
                     <svg
@@ -130,7 +141,7 @@ export const Header = () => {
                       />
                     </svg>
                   </span>
-                </button>
+                </Link>
               </nav>
             </div>
           )}

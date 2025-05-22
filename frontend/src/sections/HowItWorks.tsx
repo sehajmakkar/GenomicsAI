@@ -17,7 +17,7 @@ export function Features() {
   
 
   return (
-    <section ref={sectionRef} className="py-16 bg-gradient-to-b from-[#d78451] to-[#000000] overflow-hidden">
+    <section id="features" ref={sectionRef} className="py-16 bg-gradient-to-b from-[#d78451] to-[#000000] overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div>
           <h2 className="text-center text-3xl md:text-[54px] md:leading-[60px] font-bold tracking-tighter bg-gradient-to-b from-[#804718] to-[#000000] text-transparent bg-clip-text">
