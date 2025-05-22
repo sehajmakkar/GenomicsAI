@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import productImage from "~/assets/product-image.png";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useTransform,  type Variants } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 
 export const Hero = () => {
@@ -34,7 +34,7 @@ export const Hero = () => {
   }, []);
 
   // Animation variants for the underline
-  const underlineVariants = {
+  const underlineVariants: Variants = {
     hidden: { width: 0 },
     visible: { 
       width: underlineWidth,
@@ -46,21 +46,21 @@ export const Hero = () => {
     }
   };
 
-  // Flickering dot animation variants
-  const flickerVariants = {
+  // Flickering dot animation variants - FIXED
+  const flickerVariants: Variants = {
     initial: { opacity: 0.3 },
     animate: {
       opacity: [0.3, 1, 0.3, 1, 0.5, 1],
       transition: {
         duration: 2,
         repeat: Infinity,
-        repeatType: "reverse"
+        repeatType: "reverse" as const
       }
     }
   };
   
   // Product image animation variants (rising effect)
-  const productImageVariants = {
+  const productImageVariants: Variants = {
     initial: { 
       y: 100, 
       rotateX: 45, 
@@ -84,7 +84,7 @@ export const Hero = () => {
   };
   
   // Shadow animation variants
-  const shadowVariants = {
+  const shadowVariants: Variants = {
     initial: { 
       opacity: 0,
       scale: 0.7

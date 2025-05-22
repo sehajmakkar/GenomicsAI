@@ -97,7 +97,6 @@ const GridItem = ({ area, icon, title, description }: GridItemProps) => {
           disabled={false}
           proximity={64}
           inactiveZone={0.01}
-          color="rgba(255, 115, 77, 0.2)"
         />
         <div className="relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-xl p-6 md:p-6 bg-[#0b0908] border border-[#ff734d]/10 shadow-[0px_0px_27px_0px_rgba(255,115,77,0.05)]">
           <div className="relative flex flex-1 flex-col justify-between gap-3">

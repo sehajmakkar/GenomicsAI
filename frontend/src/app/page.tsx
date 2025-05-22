@@ -5,18 +5,18 @@ import { Hero } from "~/sections/Hero";
 import { Features } from "~/sections/HowItWorks";
 import { PathogenicityTimeline } from "~/sections/Timeline";
 import { Header } from "~/sections/Header";
-
-
+import { Footer } from "../sections/Footer";
 
 export default function HomePage() {
   return (
     <>
-    <Header />
-    <DoodleBackground />
-    <Hero />
-    <PathogenicityTimeline />
-    <Features />
-    {/* <CallToAction /> */}
+      <Header />
+      <DoodleBackground />
+      <Hero />
+      <PathogenicityTimeline />
+      <Features />
+      {/* <CallToAction /> */}
+      <Footer />
     </>
   );
 }

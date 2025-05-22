@@ -150,7 +150,7 @@ function TimelineStep({ step, index, isActive, isOdd }: any) {
       transition: { 
         duration: 0.5,
         repeat: 0,
-        repeatType: "reverse"
+        repeatType: "reverse" as const
       }
     }
   };

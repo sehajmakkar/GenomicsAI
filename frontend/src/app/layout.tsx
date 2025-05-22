@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../styles/globals.css";
 import { twMerge } from "tailwind-merge";
-import faviconImage from '~/assets/tt.png'
 
 
 const inter = Inter({
@@ -14,9 +13,9 @@ export const metadata: Metadata = {
   title: "MutateAI",
   description: "Made with Love by Sehaj Makkar - KryptoKodes",
   icons: {
-    icon: '/logo-mutate.png',
-    shortcut: '/logo-mutate.png',
-    apple: '/logo-mutate.png',
+    icon: '/favi.png',
+    shortcut: '/favi.png',
+    apple: '/favi.png',
   },
 };
 
