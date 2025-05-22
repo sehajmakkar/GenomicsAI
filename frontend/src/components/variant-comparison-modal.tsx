@@ -13,7 +13,7 @@ export function VariantComparisonModal({
   comparisonVariant: ClinvarVariant | null;
   onClose: () => void;
 }) {
-  if (!comparisonVariant || !comparisonVariant.evo2Result) return null;
+  if (!comparisonVariant || !comparisonVariant?.evo2Result) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
@@ -37,7 +37,7 @@ export function VariantComparisonModal({
 
         {/* Modal content */}
         <div className="p-5">
-          {comparisonVariant && comparisonVariant.evo2Result && (
+          {comparisonVariant && comparisonVariant?.evo2Result && (
             <div className="space-y-6">
               <div className="rounded-md border border-[#3c4f3d]/10 bg-[#e9eeea]/30 p-4">
                 <h4 className="mb-3 text-sm font-medium text-[#3c4f3d]">
@@ -73,8 +73,9 @@ export function VariantComparisonModal({
                         </span>
                         <span className="font-mono text-xs">
                           {(() => {
+                            // const refAltMatch = /(\w)>(\w)/.exec(matchedVariant.title);
                             const match =
-                              comparisonVariant.title.match(/(\w)>(\w)/);
+                              /(\w)>(\w)/.exec(comparisonVariant.title);
                             if (match && match.length === 3) {
                               const [_, ref, alt] = match;
                               return (

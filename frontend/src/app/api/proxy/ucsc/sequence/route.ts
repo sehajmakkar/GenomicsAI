@@ -26,7 +26,7 @@ export async function GET(request: Request) {
       );
     }
     
-    const data = await response.json();
+    const data = await response.json() as unknown;
     return NextResponse.json(data);
   } catch (error) {
     console.error('Error fetching sequence data:', error);

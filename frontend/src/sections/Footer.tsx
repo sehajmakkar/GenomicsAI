@@ -82,7 +82,7 @@ export function Footer() {
             </div>
             <p className="text-gray-400 mb-6 max-w-md leading-relaxed">
               Revolutionizing genomics research with AI-powered mutation detection and disease prediction. 
-              Built on Stanford's Evo 2 for next-generation insights.
+              Built on Stanford&apos;s Evo 2 for next-generation insights.
             </p>
             
             {/* Social Links */}
@@ -194,7 +194,7 @@ export function Footer() {
           <div className="flex flex-col md:flex-row items-center gap-4 text-gray-400">
             <p>&copy; {currentYear} GenomicsAI. All rights reserved.</p>
             <div className="hidden md:block w-px h-4 bg-gray-700"></div>
-            <p className="text-sm">Powered by Stanford's Evo 2 Architecture</p>
+            <p className="text-sm">Powered by Stanford&apos;s Evo 2 Architecture</p>
           </div>
           
           {/* Made with Love */}

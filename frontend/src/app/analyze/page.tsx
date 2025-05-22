@@ -52,17 +52,17 @@ export default function AnalyzePage() {
         setIsLoading(true);
         const data = await getAvailableGenomes();
 
-        if (data.genomes && data.genomes["Human"]) {
-          setGenomes(data.genomes["Human"]);
+        if (data.genomes?.Human) {
+          setGenomes(data.genomes.Human);
         }
-      } catch (error) {
+      } catch {
         setError("Failed to fetch genomes");
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchGenomes();
+    void fetchGenomes();
   }, []);
 
   useEffect(() => {
@@ -75,14 +75,14 @@ export default function AnalyzePage() {
         if (data.chromosomes.length > 0) {
           setSelectedChromosome(data.chromosomes[0]!.name);
         }
-      } catch (error) {
+      } catch {
         setError("Failed to fetch genomes");
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchChromosomes();
+    void fetchChromosomes();
   }, [selectedGenome]);
 
   const performGeneSearch = async (
@@ -96,7 +96,7 @@ export default function AnalyzePage() {
       const results = filterfn ? data.results.filter(filterfn) : data.results;
       console.log(results);
       setSearchResults(results);
-    } catch (err) {
+    } catch {
       setError("Failed to search genomes");
     } finally {
       setIsLoading(false);
@@ -106,7 +106,7 @@ export default function AnalyzePage() {
   useEffect(() => {
     if (mode !== "browse" || !selectedChromosome) return;
 
-    performGeneSearch(
+    void performGeneSearch(
       selectedChromosome,
       selectedGenome,
       (gene: GeneFromSearch) => gene.chrom === selectedChromosome,
@@ -126,7 +126,7 @@ export default function AnalyzePage() {
     setError(null);
 
     if (newMode === "browse" && selectedChromosome) {
-      performGeneSearch(
+      void performGeneSearch(
         selectedChromosome,
         selectedGenome,
         (gene: GeneFromSearch) => gene.chrom === selectedChromosome,
@@ -140,14 +140,14 @@ export default function AnalyzePage() {
     if (e) e.preventDefault();
     if (!searchQuery.trim()) return;
 
-    performGeneSearch(searchQuery, selectedGenome);
+    void performGeneSearch(searchQuery, selectedGenome);
   };
 
   const loadBRCA1Example = () => {
     setMode("search");
     setSearchQuery("BRCA1");
 
-    performGeneSearch("BRCA1", selectedGenome);
+    void performGeneSearch("BRCA1", selectedGenome);
   };
 
   return (

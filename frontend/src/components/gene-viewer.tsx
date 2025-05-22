@@ -73,7 +73,7 @@ export default function GeneViewer({
           setError(apiError);
         }
         console.log(sequence);
-      } catch (err) {
+      } catch {
         setError("Failed to load sequence data");
       } finally {
         setIsLoadingSequence(false);
@@ -154,7 +154,7 @@ export default function GeneViewer({
               const Icon = step.icon;
               const isCompleted = completedSteps.has(index);
               const isCurrent = index === currentStep;
-              const isPending = index > currentStep;
+              // const isPending = index > currentStep;
   
               return (
                 <div key={step.id} className="relative flex items-center mb-6 last:mb-0">
@@ -259,8 +259,8 @@ export default function GeneViewer({
       }
     };
 
-    initializeGeneData();
-  }, [gene, genomeId]);
+    void initializeGeneData();
+  }, [gene, genomeId, fetchGeneSequence]);
 
   const handleSequenceClick = useCallback(
     (position: number, nucleotide: string) => {
@@ -303,7 +303,7 @@ export default function GeneViewer({
     }
 
     setError(null);
-    fetchGeneSequence(start, end);
+    void fetchGeneSequence(start, end);
   }, [startPosition, endPosition, fetchGeneSequence, geneBounds]);
 
    const fetchClinvarVariants = async () => {
@@ -320,7 +320,7 @@ export default function GeneViewer({
       );
       setClinvarVariants(variants);
       console.log(variants);
-    } catch (error) {
+    } catch {
       setClinvarError("Failed to fetch ClinVar variants");
       setClinvarVariants([]);
     } finally {
@@ -330,9 +330,9 @@ export default function GeneViewer({
 
   useEffect(() => {
     if (geneBounds) {
-      fetchClinvarVariants();
+      void fetchClinvarVariants();
     }
-  }, [geneBounds]);
+  }, [geneBounds, fetchClinvarVariants]);
 
   const showComparison = (variant: ClinvarVariant) => {
     if (variant.evo2Result) {
