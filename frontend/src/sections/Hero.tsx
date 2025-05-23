@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import productImage from "~/assets/product-image.png";
+import productImage from "~/assets/hainji.png";
 import { motion, useScroll, useTransform, type Variants } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 
@@ -103,7 +103,7 @@ export const Hero = () => {
   return (
     <section
       ref={sectionRef}
-      className="overflow-x-clip bg-gradient-to-b from-[#EAEEFE] to-[#d78451] py-24"
+      className="overflow-x-clip bg-gradient-to-b from-[#EAEEFE] to-[#c26328] py-10 md:py-6"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="section-heading">
@@ -206,7 +206,7 @@ export const Hero = () => {
             initial="initial"
             animate="animate"
           >
-            <Image src={productImage} alt="Product Image" className="w-full" />
+            <Image src={productImage} alt="Product Image" className="w-full rounded-lg" />
           </motion.div>
         </div>
       </div>
