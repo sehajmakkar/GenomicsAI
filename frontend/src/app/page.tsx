@@ -6,10 +6,12 @@ import { Features } from "~/sections/HowItWorks";
 import { PathogenicityTimeline } from "~/sections/Timeline";
 import { Header } from "~/sections/Header";
 import { Footer } from "../sections/Footer";
+import { Analytics } from "@vercel/analytics/next"
 
 export default function HomePage() {
   return (
     <>
+      <Analytics />
       <Header />
       <DoodleBackground />
       <Hero />
