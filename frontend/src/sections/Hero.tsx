@@ -103,7 +103,7 @@ export const Hero = () => {
   return (
     <section
       ref={sectionRef}
-      className="overflow-x-clip bg-gradient-to-b from-[#EAEEFE] to-[#c26328] py-10 md:py-6"
+      className="overflow-x-clip bg-gradient-to-b from-[#EAEEFE] to-[#c26328] py-10 md:py-15"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="section-heading">

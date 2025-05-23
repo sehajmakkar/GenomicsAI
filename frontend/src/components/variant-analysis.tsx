@@ -62,6 +62,8 @@ const VariantAnalysis = forwardRef<VariantAnalysisHandle, VariantAnalysisProps>(
     const [variantError, setVariantError] = useState<string | null>(null);
     const [loadingStep, setLoadingStep] = useState(0);
     const [countdown, setCountdown] = useState(0);
+    const [decimalCountdown, setDecimalCountdown] = useState(0);
+    const [currentTip, setCurrentTip] = useState(0);
     const alternativeInputRef = useRef<HTMLInputElement>(null);
 
     const loadingSteps = [
@@ -71,6 +73,17 @@ const VariantAnalysis = forwardRef<VariantAnalysisHandle, VariantAnalysisProps>(
       "Analyzing variant impact...",
       "Computing pathogenicity scores...",
       "Finalizing predictions..."
+    ];
+
+    const loadingTips = [
+      "💡 Evo2 analyzes 7+ billion parameters to predict variant impact",
+      "🧬 Deep learning models can identify patterns in genetic sequences humans might miss",
+      "⚡ Cold starts ensure you get the latest model version every time",
+      "🔬 Each analysis considers evolutionary conservation across species",
+      "📊 Pathogenicity scores help prioritize variants for clinical review",
+      "🎯 AI predictions complement but don't replace clinical judgment",
+      "🔄 The model processes your variant against reference genomes",
+      "🌟 Advanced neural networks are worth the wait for accuracy"
     ];
 
     useImperativeHandle(ref, () => ({
@@ -90,14 +103,28 @@ const VariantAnalysis = forwardRef<VariantAnalysisHandle, VariantAnalysisProps>(
 
     useEffect(() => {
       if (isAnalyzing) {
-        // Start with cold startup countdown
-        setCountdown(15);
+        // Start with cold startup countdown - 40 seconds total
+        setCountdown(40);
+        setDecimalCountdown(99);
         setLoadingStep(0);
+        setCurrentTip(0);
         
+        // High-frequency timer for smooth decimal countdown
+        const decimalInterval = setInterval(() => {
+          setDecimalCountdown(prev => {
+            if (prev <= 0) {
+              return 99;
+            }
+            return prev - 1;
+          });
+        }, 10); // Update every 10ms for smooth animation
+
+        // Main countdown timer
         const countdownInterval = setInterval(() => {
           setCountdown(prev => {
             if (prev <= 1) {
               clearInterval(countdownInterval);
+              clearInterval(decimalInterval);
               // Start cycling through loading steps
               const stepInterval = setInterval(() => {
                 setLoadingStep(prev => (prev + 1) % loadingSteps.length);
@@ -111,7 +138,16 @@ const VariantAnalysis = forwardRef<VariantAnalysisHandle, VariantAnalysisProps>(
           });
         }, 1000);
 
-        return () => clearInterval(countdownInterval);
+        // Tips rotation timer
+        const tipsInterval = setInterval(() => {
+          setCurrentTip(prev => (prev + 1) % loadingTips.length);
+        }, 3000);
+
+        return () => {
+          clearInterval(countdownInterval);
+          clearInterval(decimalInterval);
+          clearInterval(tipsInterval);
+        };
       }
     }, [isAnalyzing]);
 
@@ -150,15 +186,20 @@ const VariantAnalysis = forwardRef<VariantAnalysisHandle, VariantAnalysisProps>(
       } finally {
         setIsAnalyzing(false);
         setCountdown(0);
+        setDecimalCountdown(0);
         setLoadingStep(0);
       }
     };
 
     const getLoadingText = () => {
       if (countdown > 0) {
-        return `Evo2 is warming up... ${countdown}s`;
+        return `Model warming up: ${countdown}.${decimalCountdown.toString().padStart(2, '0')}s`;
       }
       return loadingSteps[loadingStep];
+    };
+
+    const formatTimer = (seconds: number, decimals: number) => {
+      return `${seconds}.${decimals.toString().padStart(2, '0')}`;
     };
 
     return (
@@ -228,7 +269,7 @@ const VariantAnalysis = forwardRef<VariantAnalysisHandle, VariantAnalysisProps>(
               {isAnalyzing ? (
                 <>
                   <span className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent align-middle"></span>
-                  {getLoadingText()}
+                  {countdown > 0 ? `${formatTimer(countdown, decimalCountdown)}s` : loadingSteps[loadingStep]}
                 </>
               ) : (
                 "Analyze variant"
@@ -236,35 +277,73 @@ const VariantAnalysis = forwardRef<VariantAnalysisHandle, VariantAnalysisProps>(
             </Button>
           </div>
 
-          {/* Loading Progress Bar */}
+          {/* Enhanced Loading Progress */}
           {isAnalyzing && (
-            <div className="mt-4 rounded-md border border-[#3c4f3d]/10 bg-[#e9eeea]/30 p-4">
-              <div className="mb-2 flex items-center justify-between">
-                <span className="text-xs font-medium text-[#3c4f3d]/70">
-                  Analysis Progress
+            <div className="mt-4 rounded-md border border-[#3c4f3d]/10 bg-gradient-to-br from-[#e9eeea]/40 to-[#e9eeea]/20 p-5">
+              <div className="mb-3 flex items-center justify-between">
+                <span className="text-sm font-medium text-[#3c4f3d]">
+                  🚀 Evo2 Analysis in Progress
                 </span>
                 {countdown > 0 && (
-                  <span className="text-xs text-[#3c4f3d]/60">
-                    Cold start in progress
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <div className="h-2 w-2 animate-pulse rounded-full bg-[#3c4f3d]"></div>
+                    <span className="font-mono text-lg font-bold text-[#3c4f3d]">
+                      {formatTimer(countdown, decimalCountdown)}s
+                    </span>
+                  </div>
                 )}
               </div>
-              <div className="h-2 w-full rounded-full bg-[#e9eeea]">
+              
+              <div className="mb-3 h-2 w-full overflow-hidden rounded-full bg-[#e9eeea]">
                 <div
-                  className="h-2 rounded-full bg-[#3c4f3d] transition-all duration-300 ease-in-out"
+                  className="h-2 rounded-full bg-gradient-to-r from-[#3c4f3d] to-[#5a7c5c] transition-all duration-300 ease-out"
                   style={{
                     width: countdown > 0 
-                      ? `${((15 - countdown) / 15) * 30}%`
+                      ? `${((40 - countdown + (99 - decimalCountdown) / 100) / 40) * 30}%`
                       : `${30 + (loadingStep / loadingSteps.length) * 70}%`,
                   }}
                 ></div>
               </div>
-              <div className="mt-2 text-xs text-[#3c4f3d]/60">
-                {countdown > 0 
-                  ? "Model is starting up on serverless GPU..."
-                  : "Processing your variant analysis request..."
-                }
+
+              <div className="mb-4 text-center">
+                <div className="text-sm font-medium text-[#3c4f3d]">
+                  {countdown > 0 ? "🔥 Warming up AI model..." : getLoadingText()}
+                </div>
+                <div className="mt-1 text-xs text-[#3c4f3d]/60">
+                  {countdown > 0 
+                    ? "Initializing serverless GPU and loading neural networks"
+                    : "Processing your variant through 7B+ parameters"
+                  }
+                </div>
               </div>
+
+              {/* Rotating Tips */}
+              <div className="rounded-lg border border-[#3c4f3d]/10 bg-white/50 p-3">
+                <div className="flex items-start gap-2">
+                  <div className="mt-0.5 h-1.5 w-1.5 animate-pulse rounded-full bg-[#3c4f3d]"></div>
+                  <div className="text-xs text-[#3c4f3d]/80 transition-all duration-500">
+                    {loadingTips[currentTip]}
+                  </div>
+                </div>
+              </div>
+
+              {/* Progress Steps */}
+              {countdown <= 0 && (
+                <div className="mt-4 grid grid-cols-2 gap-2 md:grid-cols-3">
+                  {loadingSteps.map((step, index) => (
+                    <div
+                      key={index}
+                      className={`rounded-md px-2 py-1 text-xs transition-all duration-300 ${
+                        index <= loadingStep
+                          ? 'bg-[#3c4f3d]/10 text-[#3c4f3d] font-medium'
+                          : 'bg-[#e9eeea]/50 text-[#3c4f3d]/50'
+                      }`}
+                    >
+                      {index < loadingStep ? '✓' : index === loadingStep ? '⏳' : '○'} {step.split('...')[0]}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 
@@ -348,7 +427,7 @@ const VariantAnalysis = forwardRef<VariantAnalysisHandle, VariantAnalysisProps>(
                           {isAnalyzing ? (
                             <>
                               <span className="mr-1 inline-block h-3 w-3 animate-spin rounded-full border-2 border-[#3c4f3d] border-t-transparent align-middle"></span>
-                              {getLoadingText()}
+                              {countdown > 0 ? `${formatTimer(countdown, decimalCountdown)}s` : loadingSteps[loadingStep]}
                             </>
                           ) : (
                             <>
