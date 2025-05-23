@@ -150,7 +150,7 @@ export async function getAvailableGenomes() {
     const organism = genomeInfo?.organism ?? "Others";
 
     structuredGenomes[organism] ??= [];
-    structuredGenomes[organism]!.push({
+    structuredGenomes[organism].push({
       id: genomeId,
       name: genomeInfo?.description ?? genomeId,
       sourceName: genomeInfo?.sourceName ?? genomeId,
