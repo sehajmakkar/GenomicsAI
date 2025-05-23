@@ -260,7 +260,7 @@ export default function GeneViewer({
     };
 
     void initializeGeneData();
-  }, [gene, genomeId, fetchGeneSequence]);
+  }, [gene, genomeId]);
 
   const handleSequenceClick = useCallback(
     (position: number, nucleotide: string) => {
@@ -332,7 +332,7 @@ export default function GeneViewer({
     if (geneBounds) {
       void fetchClinvarVariants();
     }
-  }, [geneBounds, fetchClinvarVariants]);
+  }, [geneBounds]);
 
   const showComparison = (variant: ClinvarVariant) => {
     if (variant.evo2Result) {
