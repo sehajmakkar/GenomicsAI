@@ -17,6 +17,7 @@ export interface GeneFromSearch {
   name: string;
   chrom: string;
   description: string;
+  type_of_gene?: string;
   gene_id?: string;
 }
 
@@ -213,14 +214,18 @@ export async function getGenomeChromosomes(genomeId: string) {
   };
 }
 
-export async function searchGenes(query: string, genome: string) {
-  const url = "https://clinicaltables.nlm.nih.gov/api/ncbi_genes/v3/search";
-  const params = new URLSearchParams({
-    terms: query,
-    df: "chromosome,Symbol,description,map_location,type_of_gene",
-    ef: "chromosome,Symbol,description,map_location,type_of_gene,GenomicInfo,GeneID",
-  });
-  const response = await fetch(`${url}?${params}`);
+const GENE_SEARCH_URL =
+  "https://clinicaltables.nlm.nih.gov/api/ncbi_genes/v3/search";
+const GENE_DISPLAY_FIELDS =
+  "chromosome,Symbol,description,map_location,type_of_gene";
+
+async function fetchGeneRows(
+  params: URLSearchParams,
+): Promise<GeneFromSearch[]> {
+  params.set("df", GENE_DISPLAY_FIELDS);
+  params.set("ef", `${GENE_DISPLAY_FIELDS},GenomicInfo,GeneID`);
+
+  const response = await fetch(`${GENE_SEARCH_URL}?${params}`);
   if (!response.ok) {
     throw new Error("NCBI API Error");
   }
@@ -231,29 +236,90 @@ export async function searchGenes(query: string, genome: string) {
   if (data[0] > 0) {
     const fieldMap = data[2] as Record<string, string[]>;
     const geneIds = fieldMap.GeneID ?? [];
-    for (let i = 0; i < Math.min(10, data[0]); ++i) {
-      if (i < data[3].length) {
-        try {
-          const display = data[3][i] as string[];
-          let chrom = display[0];
-          if (chrom && typeof chrom === 'string' && !chrom.startsWith("chr")) {
-            chrom = `chr${chrom}`;
-          }
-          results.push({
-            symbol: String(display[2] ?? ''),
-            name: String(display[3] ?? ''),
-            chrom: String(chrom ?? ''),
-            description: String(display[3] ?? ''),
-            gene_id: String(geneIds[i] ?? ""),
-          });
-        } catch {
-          continue;
+    for (let i = 0; i < data[3].length; ++i) {
+      try {
+        const display = data[3][i] as string[];
+        let chrom = display[0];
+        if (chrom && typeof chrom === "string" && !chrom.startsWith("chr")) {
+          chrom = `chr${chrom}`;
         }
+        // `df` order is: chromosome, Symbol, description, map_location, type_of_gene
+        results.push({
+          symbol: String(display[1] ?? ""),
+          name: String(display[2] ?? ""),
+          chrom: String(chrom ?? ""),
+          description: String(display[2] ?? ""),
+          type_of_gene: String(display[4] ?? ""),
+          gene_id: String(geneIds[i] ?? ""),
+        });
+      } catch {
+        continue;
       }
     }
   }
 
-  return { query, genome, results };
+  return results;
+}
+
+// pseudogenes and enhancer annotations have no ClinVar variants, so they are
+// never what someone is looking for when a real gene shares the name.
+function typeRank(gene: GeneFromSearch) {
+  switch (gene.type_of_gene) {
+    case "protein-coding":
+      return 0;
+    case "ncRNA":
+      return 1;
+    default: // pseudo, biological-region, unknown
+      return 2;
+  }
+}
+
+export async function searchGenes(query: string, genome: string) {
+  const results = await fetchGeneRows(
+    new URLSearchParams({ terms: query, maxList: "25" }),
+  );
+
+  // NCBI returns loose text matches in its own order, which puts pseudogenes and
+  // regulatory regions ahead of the real gene (searching "BRCA1" returns BRCA1P1
+  // first). Rank the real hit first.
+  const term = query.trim().toUpperCase();
+  const nameRank = (gene: GeneFromSearch) => {
+    if (gene.symbol.toUpperCase() === term) return 0;
+    if (gene.symbol.toUpperCase().startsWith(term)) return 1;
+    return 2;
+  };
+  results.sort((a, b) => nameRank(a) - nameRank(b) || typeRank(a) - typeRank(b));
+
+  return { query, genome, results: results.slice(0, 10) };
+}
+
+/**
+ * Browse mode. Text-searching "chr17" matches thousands of enhancer annotations
+ * and no actual genes, so query the chromosome field directly instead.
+ */
+export async function fetchGenesByChromosome(chrom: string, genome: string) {
+  let chromFormatted = chrom.replace(/^chr/i, "");
+  // UCSC calls the mitochondrial chromosome "chrM"; NCBI indexes it as "MT".
+  if (chromFormatted.toUpperCase() === "M") chromFormatted = "MT";
+
+  const results = await fetchGeneRows(
+    new URLSearchParams({
+      terms: "",
+      q: `chromosome:${chromFormatted}`,
+      maxList: "100",
+    }),
+  );
+
+  const named = results
+    // every row is on the requested chromosome, so keep the caller's UCSC
+    // spelling ("chrM", not NCBI's "chrMT") for the downstream sequence fetch
+    .map((gene) => ({ ...gene, chrom }))
+    .filter((gene) => gene.symbol && !/^LOC\d+$/.test(gene.symbol));
+  named.sort(
+    (a, b) => typeRank(a) - typeRank(b) || a.symbol.localeCompare(b.symbol),
+  );
+
+  return { query: chrom, genome, results: named.slice(0, 50) };
 }
 
 export async function fetchGeneDetails(geneId: string): Promise<{

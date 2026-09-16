@@ -27,6 +27,7 @@ import {
   type ChromosomeFromSearch,
   type GeneFromSearch,
   type GenomeAssemblyFromSearch,
+  fetchGenesByChromosome,
   getAvailableGenomes,
   getGenomeChromosomes,
   searchGenes,
@@ -94,8 +95,19 @@ export default function AnalyzePage() {
       setIsLoading(true);
       const data = await searchGenes(query, genome);
       const results = filterfn ? data.results.filter(filterfn) : data.results;
-      console.log(results);
       setSearchResults(results);
+    } catch {
+      setError("Failed to search genomes");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const performChromosomeBrowse = async (chrom: string, genome: string) => {
+    try {
+      setIsLoading(true);
+      const data = await fetchGenesByChromosome(chrom, genome);
+      setSearchResults(data.results);
     } catch {
       setError("Failed to search genomes");
     } finally {
@@ -106,11 +118,7 @@ export default function AnalyzePage() {
   useEffect(() => {
     if (mode !== "browse" || !selectedChromosome) return;
 
-    void performGeneSearch(
-      selectedChromosome,
-      selectedGenome,
-      (gene: GeneFromSearch) => gene.chrom === selectedChromosome,
-    );
+    void performChromosomeBrowse(selectedChromosome, selectedGenome);
   }, [selectedChromosome, selectedGenome, mode]);
 
   const handleGenomeChange = (value: string) => {
@@ -126,11 +134,7 @@ export default function AnalyzePage() {
     setError(null);
 
     if (newMode === "browse" && selectedChromosome) {
-      void performGeneSearch(
-        selectedChromosome,
-        selectedGenome,
-        (gene: GeneFromSearch) => gene.chrom === selectedChromosome,
-      );
+      void performChromosomeBrowse(selectedChromosome, selectedGenome);
     }
 
     setMode(newMode);
